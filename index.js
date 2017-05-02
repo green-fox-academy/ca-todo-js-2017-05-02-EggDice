@@ -11,4 +11,8 @@ var usage = `NodeJS Todo application
  -c   Completes an task
 `;
 
-console.log(usage);
+if (process.argv.length === 3) {
+  console.log('No todos for today');
+} else {
+  console.log(usage);
+}
