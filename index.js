@@ -1,22 +1,46 @@
 'use strict';
 
 var list = require('./list');
+var add = require('./add');
 
 var listFeature = list();
+var addFeature = add();
+
+var features = [
+  listFeature,
+  addFeature
+];
+
+var args = process.argv.slice(2);
 
 
-var usageHeading = `NodeJS Todo application
+
+function printUsage() {
+  var usageHeading = `NodeJS Todo application
 =======================
-
+  
   Command line arguments:
 `;
-var usageFooter = ` -a   Adds a new task
- -r   Removes an task
+  var usageFooter = ` -r   Removes an task
  -c   Completes an task
 `;
-
-if (listFeature.isArgument(process.argv.slice(2))) {
-  console.log(listFeature.execute());
-} else {
-  console.log(usageHeading + listFeature.getUsage() + usageFooter);
+  var usages = '';
+  for (var i = 0; i < features.length; i++) {
+    usages += features[i].getUsage();
+  }
+  console.log(usageHeading + usages + usageFooter);
 }
+
+function run(args) {
+  if (args.length === 0) {
+    printUsage();
+    return;
+  }
+  for (var i = 0; i < features.length; i++) {
+    if (features[i].isArgument(args)) {
+      console.log(features[i].execute());
+    }
+  }
+}
+
+run(args);
